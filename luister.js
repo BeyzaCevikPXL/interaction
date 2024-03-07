@@ -45,6 +45,8 @@ volumeSlider.addEventListener('input', function() {
 
 // Get the modal
 const modal = document.getElementById("modal");
+const microbutton = document.querySelector('.microbutton');
+
 
 // Get the div that opens the modal
 const microphone = document.querySelector(".microphone");
@@ -63,7 +65,38 @@ function closeModal() {
 microphone.onclick = function() {
     openModal();
 }
+microbutton.addEventListener('click', function() {
+    // Hide subtitel and voicebutton smoothly
+    const subtitel = document.querySelector('.subtitel');
+    const voicebutton = document.querySelector('.voicebutton');
+    subtitel.style.transition = 'opacity 0.5s ease-out';
+    voicebutton.style.transition = 'opacity 0.5s ease-out';
+    subtitel.style.opacity = 0;
+    voicebutton.style.opacity = 0;
+    setTimeout(() => {
+        subtitel.style.display = 'none';
+        voicebutton.style.display = 'none';
 
+        // Show the new paragraph and image smoothly
+        const modalContent = document.querySelector('.modal-content');
+        const newParagraph = document.createElement('p');
+        newParagraph.textContent = 'Zet het volume op 80%';
+        newParagraph.style.opacity = 0;
+        modalContent.appendChild(newParagraph);
+        setTimeout(() => {
+            newParagraph.style.opacity = 1;
+        }, 50);
+
+        const newImage = document.createElement('img');
+        newImage.src = 'assets/Group1.png';
+        newImage.alt = 'Modal Image';
+        newImage.style.opacity = 0;
+        modalContent.appendChild(newImage);
+        setTimeout(() => {
+            newImage.style.opacity = 1;
+        }, 50);
+    }, 500);
+});
 // Function to increase volume
 /* function increaseVolume() {
     if (audio.volume < 1.0) {
