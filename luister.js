@@ -5,18 +5,25 @@ const durationDisplay = document.querySelector('.duration');
 const playButton = document.getElementById('playButton');
 const volumeSlider = document.querySelector('.volume-slider');
 const progressThumb = document.querySelector('.progress-thumb');
+const volumeOverlay = document.querySelector('.volume-overlay');
+const volumeText = document.querySelector('.volume-text');
 
 let isDragging = false;
 
-
-// Update progress bar
+volumeSlider.addEventListener('input', function() {
+    const volume = this.value;
+    const volumePercentage = volume + '%';
+    
+    volumeOverlay.style.width = volumePercentage;
+    volumeText.textContent = volumePercentage;
+    audio.volume = volume / 100;
+});
 audio.addEventListener('timeupdate', function() {
     const progress = (audio.currentTime / audio.duration) * 100;
     progressBar.style.width = progress + '%';
     const currentTime = formatTime(audio.currentTime);
     timeDisplay.textContent = currentTime;
 });
-// Update duration display once metadata is loaded
 audio.addEventListener('loadedmetadata', function() {
     const duration = formatTime(audio.duration);
     durationDisplay.textContent = duration;
@@ -32,7 +39,6 @@ playButton.addEventListener('click', function() {
         playButton.classList.add('fa-play');
     }
 });
-// Helper function to format time in mm:ss format
 function formatTime(time) {
     const minutes = Math.floor(time / 60);
     const seconds = Math.floor(time % 60);
@@ -41,32 +47,32 @@ function formatTime(time) {
 volumeSlider.addEventListener('input', function() {
     const volume = this.value / 100;
     audio.volume = volume;
+    
 });
 
-// Get the modal
 const modal = document.getElementById("modal");
 const microbutton = document.querySelector('.microbutton');
 
 
-// Get the div that opens the modal
 const microphone = document.querySelector(".microphone");
 
-// Function to open the modal
 function openModal() {
     modal.style.display = "block";
 }
 
-// Function to close the modal
 function closeModal() {
     modal.style.display = "none";
+    const volume = 80; // Set the default volume to 80%
+    audio.volume = volume / 100; // Set the volume of the audio element
+    volumeSlider.value = volume; // Set the value of the volume slider
+    volumeOverlay.style.width = volume + '%'; // Update the volume overlay width
+    volumeText.textContent = volume + '%'; // Update the volume text content
 }
 
-// When the user clicks on the microphone div, open the modal
 microphone.onclick = function() {
     openModal();
 }
 microbutton.addEventListener('click', function() {
-    // Hide subtitel and voicebutton smoothly
     const subtitel = document.querySelector('.subtitel');
     const voicebutton = document.querySelector('.voicebutton');
     subtitel.style.transition = 'opacity 0.5s ease-out';
@@ -77,10 +83,10 @@ microbutton.addEventListener('click', function() {
         subtitel.style.display = 'none';
         voicebutton.style.display = 'none';
 
-        // Show the new paragraph and image smoothly
         const modalContent = document.querySelector('.modal-content');
         const newParagraph = document.createElement('p');
         newParagraph.textContent = 'Zet het volume op 80%';
+        newParagraph.classList.add('custom-p-class'); 
         newParagraph.style.opacity = 0;
         modalContent.appendChild(newParagraph);
         setTimeout(() => {
@@ -88,8 +94,9 @@ microbutton.addEventListener('click', function() {
         }, 50);
 
         const newImage = document.createElement('img');
-        newImage.src = 'assets/Group1.png';
+        newImage.src = 'assets/geluidbalk.png';
         newImage.alt = 'Modal Image';
+        newImage.classList.add('custom-image-class'); 
         newImage.style.opacity = 0;
         modalContent.appendChild(newImage);
         setTimeout(() => {
@@ -97,27 +104,3 @@ microbutton.addEventListener('click', function() {
         }, 50);
     }, 500);
 });
-// Function to increase volume
-/* function increaseVolume() {
-    if (audio.volume < 1.0) {
-        audio.volume += 0.1; // Increase volume by 10%
-    }
-}
-
-// Function to decrease volume
-function decreaseVolume() {
-    if (audio.volume > 0.0) {
-        audio.volume -= 0.1; // Decrease volume by 10%
-    }
-}
-
-// Example: Listening to a button click to turn up the volume
-document.getElementById('turnUpButton').addEventListener('click', () => {
-    increaseVolume();
-});
-
-
-// Example: Listening to a button click to turn down the volume
-document.getElementById('turnDownButton').addEventListener('click', () => {
-    decreaseVolume();
-}); */
