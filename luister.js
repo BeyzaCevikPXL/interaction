@@ -62,11 +62,11 @@ function openModal() {
 
 function closeModal() {
     modal.style.display = "none";
-    const volume = 80; // Set the default volume to 80%
-    audio.volume = volume / 100; // Set the volume of the audio element
-    volumeSlider.value = volume; // Set the value of the volume slider
-    volumeOverlay.style.width = volume + '%'; // Update the volume overlay width
-    volumeText.textContent = volume + '%'; // Update the volume text content
+    const volume = 80; 
+    audio.volume = volume / 100; 
+    volumeSlider.value = volume; 
+    volumeOverlay.style.width = volume + '%'; 
+    volumeText.textContent = volume + '%'; 
 }
 
 microphone.onclick = function() {
